@@ -2,19 +2,38 @@
 //
 
 #include <iostream>
+#include <bitset>
+#include <algorithm>
+
+
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    int value;
+    int terminated13 = 0;
+    int terminated18 = 0;
+    std::string binaryStr;
+    for (int i = 1; i <= 1000000; i++) {  // TODO: Check for 0, which would be 0000...00000 and therefore would incorrectly count the letters
+        value = i;
+        while (true) {
+            //std::cout << value << std::endl;
+            binaryStr = std::bitset<33>(value).to_string();  // Converts int (expressed as a raw array of bits in memory [bitset type]) to a binary string
+            value = (std::count(binaryStr.begin(), binaryStr.end(), '0') - binaryStr.find('1', 0)) * 4
+                + std::count(binaryStr.begin(), binaryStr.end(), '1') * 3; // Counts the number of 'one's and 'zero's excluding those preceding the first '1'
+            if (value == 13) {
+                //std::cout << "13 (Terminated!)" << std::endl;
+                terminated13++;
+                break;
+            }
+            else if (value == 18) {
+                //std::cout << "18 (Terminated!)" << std::endl;
+                terminated18++;
+                break;
+            }
+        }
+    }
+    std::cout << "13: " << terminated13 << std::endl;
+    std::cout << "18: " << terminated18 << std::endl;
+    return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
